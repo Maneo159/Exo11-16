@@ -1,0 +1,16 @@
+org\example\exo15\service\JwtService.class
+org\example\exo15\Exo15Application.class
+org\example\exo15\dto\LoginRequest.class
+org\example\exo15\controller\AuthController.class
+org\example\exo15\filter\JwtFilter.class
+org\example\exo15\service\ProjectService.class
+org\example\exo15\dto\LoginResponse.class
+org\example\exo15\repository\ProjectRepository.class
+org\example\exo15\service\AuthService.class
+org\example\exo15\dto\ProjectListResponse.class
+org\example\exo15\entity\Project.class
+org\example\exo15\repository\UserRepository.class
+org\example\exo15\controller\ProjectController.class
+org\example\exo15\listener\DataInitializer.class
+org\example\exo15\config\FilterConfig.class
+org\example\exo15\entity\User.class

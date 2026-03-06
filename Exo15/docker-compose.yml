@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:h2:mem:testdb
+      - SPRING_DATASOURCE_DRIVERCLASSNAME=org.h2.Driver
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=
+      - JWT_SECRET=ExerciceExo15JWTSecretKeyForAuthenticationServiceOfProjectManagement1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ
+      - JWT_EXPIRATION=86400000
+    container_name: exo15-app
+
+volumes:
+  h2-data:
+
