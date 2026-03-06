@@ -1,0 +1,6 @@
+org\example\exo11\Exo11Application.class
+org\example\exo11\service\UserService.class
+org\example\exo11\controller\UserController.class
+org\example\exo11\entity\User$UserBuilder.class
+org\example\exo11\entity\User.class
+org\example\exo11\repository\UserRepository.class
