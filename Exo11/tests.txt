@@ -1,0 +1,247 @@
+================================================================================
+                    TESTS API - GESTION DES UTILISATEURS
+                          Postman / cURL Examples
+================================================================================
+
+Base URL: http://localhost:8080
+
+Données initiales dans la base de données (via schema.sql):
+- ID 1: User1, user1@example.com, active=true
+- ID 2: User2, user2@example.com, active=true
+- ID 3: User3, user3@example.com, active=false
+- ID 4: User4, user4@example.com, active=true
+
+================================================================================
+TEST 1 - Récupérer tous les utilisateurs
+================================================================================
+
+URL: GET http://localhost:8080/api/users
+
+RÉPONSE ATTENDUE (200 OK):
+[
+  {
+    "id": 1,
+    "name": "User1",
+    "email": "user1@example.com",
+    "active": true
+  },
+  {
+    "id": 2,
+    "name": "User2",
+    "email": "user2@example.com",
+    "active": true
+  },
+  {
+    "id": 3,
+    "name": "User3",
+    "email": "user3@example.com",
+    "active": false
+  },
+  {
+    "id": 4,
+    "name": "User4",
+    "email": "user4@example.com",
+    "active": true
+  }
+]
+
+================================================================================
+TEST 2 - Récupérer un utilisateur spécifique (ID 1)
+================================================================================
+
+URL: GET http://localhost:8080/api/users/1
+
+RÉPONSE ATTENDUE (200 OK):
+{
+  "id": 1,
+  "name": "User1",
+  "email": "user1@example.com",
+  "active": true
+}
+
+================================================================================
+TEST 3 - Récupérer un utilisateur inexistant (ID 99)
+================================================================================
+
+URL: GET http://localhost:8080/api/users/99
+
+RÉPONSE ATTENDUE (404 Not Found):
+{}
+
+================================================================================
+TEST 4 - Créer un nouvel utilisateur
+================================================================================
+
+URL: POST http://localhost:8080/api/users
+
+HEADERS:
+Content-Type: application/json
+
+REQUEST BODY:
+{
+  "name": "Jean Dupont",
+  "email": "jean.dupont@example.com",
+  "active": true
+}
+
+RÉPONSE ATTENDUE (201 Created ou 200 OK):
+{
+  "id": 5,
+  "name": "Jean Dupont",
+  "email": "jean.dupont@example.com",
+  "active": true
+}
+
+================================================================================
+TEST 5 - Créer un utilisateur avec email en doublon
+================================================================================
+
+URL: POST http://localhost:8080/api/users
+
+HEADERS:
+Content-Type: application/json
+
+REQUEST BODY:
+{
+  "name": "Autre Utilisateur",
+  "email": "user1@example.com",
+  "active": true
+}
+
+RÉPONSE ATTENDUE (400 Bad Request ou 409 Conflict):
+Erreur : L'email "user1@example.com" existe déjà
+
+================================================================================
+TEST 6 - Mettre à jour un utilisateur (ID 1)
+================================================================================
+
+URL: PUT http://localhost:8080/api/users/1
+
+HEADERS:
+Content-Type: application/json
+
+REQUEST BODY:
+{
+  "name": "User1 Modifié",
+  "email": "user1.updated@example.com",
+  "active": false
+}
+
+RÉPONSE ATTENDUE (200 OK):
+{
+  "id": 1,
+  "name": "User1 Modifié",
+  "email": "user1.updated@example.com",
+  "active": false
+}
+
+================================================================================
+TEST 7 - Mettre à jour un utilisateur inexistant (ID 99)
+================================================================================
+
+URL: PUT http://localhost:8080/api/users/99
+
+HEADERS:
+Content-Type: application/json
+
+REQUEST BODY:
+{
+  "name": "Ghost User",
+  "email": "ghost@example.com",
+  "active": true
+}
+
+RÉPONSE ATTENDUE (404 Not Found):
+{}
+
+================================================================================
+TEST 8 - Supprimer un utilisateur (ID 2)
+================================================================================
+
+URL: DELETE http://localhost:8080/api/users/2
+
+RÉPONSE ATTENDUE (204 No Content):
+(Aucun contenu de réponse)
+
+Vérification après suppression:
+URL: GET http://localhost:8080/api/users
+
+Le fichier utilisateur avec ID 2 (User2) devrait être absent.
+
+================================================================================
+TEST 9 - Supprimer un utilisateur inexistant (ID 99)
+================================================================================
+
+URL: DELETE http://localhost:8080/api/users/99
+
+RÉPONSE ATTENDUE (204 No Content ou 404 Not Found):
+(Aucun contenu ou erreur)
+
+================================================================================
+TEST 10 - Vérifier tous les utilisateurs après modifications
+================================================================================
+
+URL: GET http://localhost:8080/api/users
+
+RÉPONSE ATTENDUE (200 OK):
+Les utilisateurs modifiés/créés/supprimés reflètent les changements effectués
+dans les tests précédents.
+
+Exemple (après avoir exécuté tous les tests):
+[
+  {
+    "id": 1,
+    "name": "User1 Modifié",
+    "email": "user1.updated@example.com",
+    "active": false
+  },
+  {
+    "id": 3,
+    "name": "User3",
+    "email": "user3@example.com",
+    "active": false
+  },
+  {
+    "id": 4,
+    "name": "User4",
+    "email": "user4@example.com",
+    "active": true
+  },
+  {
+    "id": 5,
+    "name": "Jean Dupont",
+    "email": "jean.dupont@example.com",
+    "active": true
+  }
+]
+
+================================================================================
+                            NOTES IMPORTANTES
+================================================================================
+
+1. L'API est réactive (non-bloquante) - Les réponses utilisent Mono/Flux
+2. Tous les timestamps (created_at, updated_at) sont gérés automatiquement
+3. L'email doit être unique (contrainte UNIQUE en base de données)
+4. Les codes HTTP utilisés:
+   - 200 OK: Requête réussie (GET, PUT, POST)
+   - 201 Created: Ressource créée (POST)
+   - 204 No Content: Suppression réussie (DELETE)
+   - 404 Not Found: Ressource non trouvée
+   - 400/409: Erreur de validation (email en doublon, etc.)
+
+5. Format des réponses:
+   - GET multiple: Array JSON
+   - GET simple: Object JSON
+   - POST: Object JSON créé
+   - PUT: Object JSON mis à jour
+   - DELETE: 204 No Content (pas de corps)
+
+6. Pour réinitialiser la base de données:
+   - Arrêter l'application
+   - Arrêter Docker Compose: docker-compose down
+   - Nettoyer les volumes: docker volume rm exo11_postgres_data
+   - Relancer: docker-compose up -d
+   - Redémarrer l'application
+
+================================================================================
+
