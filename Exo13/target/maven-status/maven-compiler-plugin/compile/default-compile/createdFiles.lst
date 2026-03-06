@@ -1,0 +1,5 @@
+org\example\exo13\ProductService.class
+org\example\exo13\Product.class
+org\example\exo13\ProductRepository.class
+org\example\exo13\Exo13Application.class
+org\example\exo13\ProductController.class

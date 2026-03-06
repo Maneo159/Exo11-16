@@ -1,0 +1,120 @@
+TEST API DE GESTION DES PRODUITS
+================================
+
+1. Récupérer tous les produits
+Nom de la commande: Get All Products
+Commande: GET http://localhost:8080/api/products
+Réponse:
+[
+  {
+    "id": 1,
+    "name": "Laptop",
+    "price": 999.99,
+    "stock": 5
+  },
+  {
+    "id": 2,
+    "name": "Phone",
+    "price": 599.99,
+    "stock": 15
+  },
+  {
+    "id": 3,
+    "name": "Tablet",
+    "price": 399.99,
+    "stock": 8
+  }
+]
+
+
+2. Récupérer un produit par ID
+Nom de la commande: Get Product By Id
+Commande: GET http://localhost:8080/api/products/1
+Réponse:
+{
+  "id": 1,
+  "name": "Laptop",
+  "price": 999.99,
+  "stock": 5
+}
+
+
+3. Créer un nouveau produit
+Nom de la commande: Create Product
+Commande: POST http://localhost:8080/api/products
+Body:
+{
+  "name": "Monitor",
+  "price": 249.99,
+  "stock": 10
+}
+Réponse:
+{
+  "id": 4,
+  "name": "Monitor",
+  "price": 249.99,
+  "stock": 10
+}
+
+
+4. Mettre à jour un produit
+Nom de la commande: Update Product
+Commande: PUT http://localhost:8080/api/products/1
+Body:
+{
+  "name": "Gaming Laptop",
+  "price": 1299.99,
+  "stock": 3
+}
+Réponse:
+{
+  "id": 1,
+  "name": "Gaming Laptop",
+  "price": 1299.99,
+  "stock": 3
+}
+
+
+5. Rechercher des produits par nom
+Nom de la commande: Search Products
+Commande: GET http://localhost:8080/api/products/search?name=phone
+Réponse:
+[
+  {
+    "id": 2,
+    "name": "Phone",
+    "price": 599.99,
+    "stock": 15
+  }
+]
+
+
+6. Réduire le stock après un achat
+Nom de la commande: Buy Product
+Commande: PUT http://localhost:8080/api/products/2/buy?quantity=5
+Réponse:
+{
+  "id": 2,
+  "name": "Phone",
+  "price": 599.99,
+  "stock": 10
+}
+
+
+7. Réduire le stock avec quantité insuffisante
+Nom de la commande: Buy Product - Insufficient Stock
+Commande: PUT http://localhost:8080/api/products/1/buy?quantity=10
+Réponse:
+{
+  "timestamp": "2026-03-06T14:30:00.000Z",
+  "status": 500,
+  "error": "Internal Server Error",
+  "message": "Insufficient stock"
+}
+
+
+8. Supprimer un produit
+Nom de la commande: Delete Product
+Commande: DELETE http://localhost:8080/api/products/4
+Réponse: (Status 200, Corps vide)
+
