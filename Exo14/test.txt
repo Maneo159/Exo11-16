@@ -1,0 +1,51 @@
+Test 1: GET /api/rooms sans authentification
+Requête: GET /api/rooms
+Réponse: 401 Unauthorized
+{
+  "error": "UNAUTHORIZED",
+  "message": "Vous devez vous connecter pour accéder à cette ressource"
+}
+
+Test 2: GET /api/rooms avec rôle USER
+Requête: GET /api/rooms (authentifié avec rôle USER)
+Réponse: 200 OK
+[
+  {
+    "id": 1,
+    "name": "Salle A"
+  },
+  {
+    "id": 2,
+    "name": "Salle B"
+  }
+]
+
+Test 3: POST /api/rooms avec rôle USER
+Requête: POST /api/rooms
+Body: {"name": "Salle C"}
+Réponse: 403 Forbidden
+{
+  "error": "FORBIDDEN",
+  "message": "Vous n'avez pas les droits nécessaires pour accéder à cette ressource"
+}
+
+Test 4: POST /api/rooms avec rôle ADMIN
+Requête: POST /api/rooms (authentifié avec rôle ADMIN)
+Body: {"name": "Salle C"}
+Réponse: 201 Created
+{
+  "id": 3,
+  "name": "Salle C"
+}
+
+Test 5: DELETE /api/rooms/{id} avec rôle USER
+Requête: DELETE /api/rooms/1 (authentifié avec rôle USER)
+Réponse: 403 Forbidden
+{
+  "error": "FORBIDDEN",
+  "message": "Vous n'avez pas les droits nécessaires pour accéder à cette ressource"
+}
+
+Test 6: DELETE /api/rooms/{id} avec rôle ADMIN
+Requête: DELETE /api/rooms/3 (authentifié avec rôle ADMIN)
+Réponse: 204 No Content
